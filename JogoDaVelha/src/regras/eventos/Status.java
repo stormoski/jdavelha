@@ -4,6 +4,7 @@ public class Status {
     private String jogadorCorrente;
     private String[] posicoes;
     private int posicaoPressionada;
+    private String status;
     
     public Status(String jogadorCorrente, String[] posicoes){
         this.setJogadorCorrente(jogadorCorrente);
@@ -32,5 +33,13 @@ public class Status {
 
     public void setPosicaoPressionada(int posicaoPressionada){
         this.posicaoPressionada = posicaoPressionada;
+    }
+
+    public String getStatus(){
+        return this.status;
+    }
+
+    public void setStatus(String status){
+        this.status = status;
     }
 }

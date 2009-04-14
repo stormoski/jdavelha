@@ -6,7 +6,7 @@ import java.util.List;
 import regras.eventos.Status;
 import regras.eventos.OuvinteStatus;
 
-public class JogoDaVelhaLocal {
+public class JogoDaVelhaLocal implements JogoDaVelha {
     private String[] posicoes;
     private String[] jogadores;
     private int jogadorCorrente;
@@ -41,6 +41,7 @@ public class JogoDaVelhaLocal {
         posicoes[posicao] = jogadores[jogadorCorrente];
         jogadorCorrente = (jogadorCorrente + 1) % 2;
         status.setPosicaoPressionada(posicao);
+        status.setJogadorCorrente(jogadores[jogadorCorrente]);
         
         this.atualizarStatus();
 
@@ -106,25 +107,25 @@ public class JogoDaVelhaLocal {
         ouvintes.remove(ouvinte);
     }
     
-    public void fireMudouStatusJogo(){
+    private void fireMudouStatusJogo(){
         for(OuvinteStatus ouvinte : ouvintes){
             ouvinte.mudouEstadoJogo(status);
         }
     }
 
-    public void fireEmpatouJogo(){
+    private void fireEmpatouJogo(){
         for(OuvinteStatus ouvinte : ouvintes){
             ouvinte.empatouJogo(status);
         }
     }
 
-    public void fireAcabouJogo(){
+    private void fireAcabouJogo(){
         for(OuvinteStatus ouvinte : ouvintes){
             ouvinte.acabouJogo(status);
         }
     }
 
-    private void firePosicaoOcupada() {
+    private void firePosicaoOcupada(){
         for(OuvinteStatus ouvinte : ouvintes){
             ouvinte.posicaoOcupada(status);
         }
