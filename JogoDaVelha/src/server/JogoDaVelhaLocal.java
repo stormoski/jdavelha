@@ -1,19 +1,19 @@
-package server;
+package regras;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import eventos.Status;
-import eventos.OuvinteStatus;
+import regras.eventos.Status;
+import regras.eventos.OuvinteStatus;
 
-public class JogoDaVelhaServer implements JogoDaVelha {
+public class JogoDaVelhaLocal {
     private String[] posicoes;
     private String[] jogadores;
     private int jogadorCorrente;
     private Status status;
     private List<OuvinteStatus> ouvintes;
 
-    public JogoDaVelhaServer(){
+    public JogoDaVelhaLocal(){
         posicoes = new String[9];
         jogadores = new String[2];
         ouvintes = new ArrayList<OuvinteStatus>();
@@ -41,7 +41,6 @@ public class JogoDaVelhaServer implements JogoDaVelha {
         posicoes[posicao] = jogadores[jogadorCorrente];
         jogadorCorrente = (jogadorCorrente + 1) % 2;
         status.setPosicaoPressionada(posicao);
-        status.setJogadorCorrente(jogadores[jogadorCorrente]);
         
         this.atualizarStatus();
 
@@ -107,25 +106,25 @@ public class JogoDaVelhaServer implements JogoDaVelha {
         ouvintes.remove(ouvinte);
     }
     
-    private void fireMudouStatusJogo(){
+    public void fireMudouStatusJogo(){
         for(OuvinteStatus ouvinte : ouvintes){
             ouvinte.mudouEstadoJogo(status);
         }
     }
 
-    private void fireEmpatouJogo(){
+    public void fireEmpatouJogo(){
         for(OuvinteStatus ouvinte : ouvintes){
             ouvinte.empatouJogo(status);
         }
     }
 
-    private void fireAcabouJogo(){
+    public void fireAcabouJogo(){
         for(OuvinteStatus ouvinte : ouvintes){
             ouvinte.acabouJogo(status);
         }
     }
 
-    private void firePosicaoOcupada(){
+    private void firePosicaoOcupada() {
         for(OuvinteStatus ouvinte : ouvintes){
             ouvinte.posicaoOcupada(status);
         }

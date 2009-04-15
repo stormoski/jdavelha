@@ -1,15 +1,9 @@
-package server;
-
-import eventos.OuvinteStatus;
+package regras;
 
 public interface JogoDaVelha {
-    void iniciar(String jogador1, String jogador2);
+    void iniciar();
     
     void jogar(int posicao);
     
     void atualizarStatus();
-
-    void addOuvinteStatus(OuvinteStatus ouvinte);
-
-    void removeOuvinteStatus(OuvinteStatus ouvinte);
 }
