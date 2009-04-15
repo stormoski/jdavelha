@@ -10,10 +10,10 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import client.rede.JogoDaVelhaServerProxy;
+import client.JogoDaVelhaServerProxy;
 import server.JogoDaVelha;
-import server.eventos.OuvinteStatus;
-import server.eventos.Status;
+import eventos.OuvinteStatus;
+import eventos.Status;
 
 public class FrmJogo extends JFrame {
     private JogoDaVelha jogo;

@@ -1,8 +1,8 @@
-package client.rede;
+package client;
 
 import java.net.Socket;
 import server.JogoDaVelha;
-import server.eventos.OuvinteStatus;
+import eventos.OuvinteStatus;
 
 public class JogoDaVelhaServerProxy implements JogoDaVelha {
     private Socket cliente;

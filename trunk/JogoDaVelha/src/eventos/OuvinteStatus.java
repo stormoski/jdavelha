@@ -1,4 +1,4 @@
-package regras.eventos;
+package eventos;
 
 public interface OuvinteStatus {
     void mudouEstadoJogo(Status statusJogo);
