@@ -1,19 +1,19 @@
-package regras;
+package server;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import regras.eventos.Status;
-import regras.eventos.OuvinteStatus;
+import eventos.Status;
+import eventos.OuvinteStatus;
 
-public class JogoDaVelhaLocal implements JogoDaVelha {
+public class JogoDaVelhaServer implements JogoDaVelha {
     private String[] posicoes;
     private String[] jogadores;
     private int jogadorCorrente;
     private Status status;
     private List<OuvinteStatus> ouvintes;
 
-    public JogoDaVelhaLocal(){
+    public JogoDaVelhaServer(){
         posicoes = new String[9];
         jogadores = new String[2];
         ouvintes = new ArrayList<OuvinteStatus>();

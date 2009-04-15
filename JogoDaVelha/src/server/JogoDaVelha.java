@@ -1,6 +1,6 @@
-package regras;
+package server;
 
-import regras.eventos.OuvinteStatus;
+import eventos.OuvinteStatus;
 
 public interface JogoDaVelha {
     void iniciar(String jogador1, String jogador2);

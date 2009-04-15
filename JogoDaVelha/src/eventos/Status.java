@@ -1,4 +1,4 @@
-package regras.eventos;
+package eventos;
 
 public class Status {
     private String jogadorCorrente;
