@@ -11,6 +11,9 @@ public class Status {
         this.setPosicoes(posicoes);
     }
 
+    public Status(){
+    }
+
     public String getJogadorCorrente() {
         return jogadorCorrente;
     }
