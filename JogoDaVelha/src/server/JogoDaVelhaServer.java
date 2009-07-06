@@ -46,12 +46,19 @@ public class JogoDaVelhaServer {
 
             mapaJogadores.put("X", server.accept());
             this.fireNovaConexao("X", mapaJogadores.get("X").getInetAddress().getHostAddress());
+
+            this.escrever("X", "status|conectado");
+
             mapaJogadores.put("O", server.accept());
             this.fireNovaConexao("O", mapaJogadores.get("O").getInetAddress().getHostAddress());
+
+            this.escrever("O", "status|conectado");
+            this.escrever("jogo|iniciarJogo");
+
             jogadores[0] = "X";
             jogadores[1] = "O";
             jogadorCorrente = (int) (Math.random() * 2);
-            status = new Status(jogadores[jogadorCorrente], posicoes);
+            status = new Status();
 
             this.atualizarStatus();
 
@@ -69,17 +76,16 @@ public class JogoDaVelhaServer {
     }
 
     private void jogar(int posicao) {
+        
         if(this.posicaoOcupada(posicao)){
-            this.firePosicaoOcupada();
+            this.firePosicaoOcupada(posicao);
             return;
         }
         
         posicoes[posicao] = jogadores[jogadorCorrente];
         jogadorCorrente = (jogadorCorrente + 1) % 2;
-        status.setPosicaoPressionada(posicao);
-        status.setJogadorCorrente(jogadores[jogadorCorrente]);
         
-        this.atualizarStatus();
+        this.atualizarStatus(posicao);
 
         if(this.existeGanhador()){
             this.fireAcabouJogo();
@@ -127,11 +133,30 @@ public class JogoDaVelhaServer {
         return this.acabouJogo;
     }
 
-    private BufferedWriter getWriter(){
-        BufferedWriter writer = null;
-        
+    private void escrever(String jogador, String mensagem) {
         try{
-            Socket socket = mapaJogadores.get(jogadores[jogadorCorrente]);
+            getWriter(jogador).write(mensagem);
+        } catch(IOException ex){
+            this.fireErro(ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
+    private void escrever(String mensagem) {
+        for(String s : jogadores) {
+            this.escrever(s, mensagem);
+        }
+    }
+
+    private BufferedWriter getWriter(){
+        return this.getWriter(jogadores[jogadorCorrente]);
+    }
+
+    private BufferedWriter getWriter(String jogador){
+        BufferedWriter writer = null;
+
+        try{
+            Socket socket = mapaJogadores.get(jogador);
             writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         } catch(IOException ex){
             this.fireErro(ex.getMessage());
@@ -163,6 +188,13 @@ public class JogoDaVelhaServer {
         return !posicoes[posicao].equals("");
     }
 
+    public void atualizarStatus(int posicao) {
+        status.setPosicaoPressionada(posicao);
+        status.setJogadorCorrente(jogadores[jogadorCorrente]);
+        
+        this.atualizarStatus();
+    }
+
     public void atualizarStatus() {
         this.fireMudouStatusJogo();
     }
@@ -188,12 +220,14 @@ public class JogoDaVelhaServer {
     }
 
     private void fireAcabouJogo(){
+        this.escrever("status|acabou");
         for(OuvinteStatusServer ouvinte : ouvintes){
             ouvinte.acabouJogo(status);
         }
     }
 
-    private void firePosicaoOcupada(){
+    private void firePosicaoOcupada(int posicao){
+        this.escrever("posicaoOcupada|" + posicao);
         for(OuvinteStatusServer ouvinte : ouvintes){
             ouvinte.posicaoOcupada(status);
         }

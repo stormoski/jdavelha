@@ -18,6 +18,7 @@ public class Client {
     private BufferedWriter saida;
     private Status status;
     private List<OuvinteStatus> ouvintes;
+    private boolean acabouJogo;
 
     public Client() {
         //try {
@@ -33,6 +34,12 @@ public class Client {
             saida = new BufferedWriter(new OutputStreamWriter(cliente.getOutputStream()));
             saida.flush();
             entrada = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
+            acabouJogo = entrada.readLine().contains("acabou");
+
+            while(!this.acabouJogo()){
+                String[] mensagem = entrada.readLine().split("|");
+                
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -46,9 +53,15 @@ public class Client {
     }
 
     public void addOuvinteStatus(OuvinteStatus ouvinte) {
+        ouvintes.add(ouvinte);
     }
 
     public void removeOuvinteStatus(OuvinteStatus ouvinte) {
+        ouvintes.remove(ouvinte);
+    }
+
+    private boolean acabouJogo() {
+        return this.acabouJogo;
     }
 
     private void fireMudouStatusJogo(){
