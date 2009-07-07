@@ -38,7 +38,15 @@ public class Client {
 
             while(!this.acabouJogo()){
                 String[] mensagem = entrada.readLine().split("|");
-                
+
+                if(mensagem[0].equals("status")){
+                    if(mensagem[1].equals("conectado")){
+                        
+                    } else if(mensagem[1].equals("acabou")){
+
+                    }
+                } else if(mensagem[0].equals("")){
+                }
             }
         } catch (IOException ex) {
             ex.printStackTrace();
