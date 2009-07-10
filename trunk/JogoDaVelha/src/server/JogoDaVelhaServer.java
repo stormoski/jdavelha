@@ -47,13 +47,13 @@ public class JogoDaVelhaServer {
             mapaJogadores.put("X", server.accept());
             this.fireNovaConexao("X", mapaJogadores.get("X").getInetAddress().getHostAddress());
 
-            this.escrever("X", "status|conectado");
+            this.escrever("X", "statusGeral|conectado");
 
             mapaJogadores.put("O", server.accept());
             this.fireNovaConexao("O", mapaJogadores.get("O").getInetAddress().getHostAddress());
 
-            this.escrever("O", "status|conectado");
-            this.escrever("jogo|iniciarJogo");
+            this.escrever("O", "statusGeral|conectado");
+            this.escrever("statusGeral|iniciarJogo");
 
             jogadores[0] = "X";
             jogadores[1] = "O";
@@ -62,16 +62,26 @@ public class JogoDaVelhaServer {
 
             this.atualizarStatus();
 
-            while(!this.acabouJogo()) {
-                String linha = this.getReader().readLine();
-
-                if(linha.split("|")[0].equals("jogar")) {
-                    this.jogar(Integer.parseInt(linha.split("|")[1]));
-                }
-            }
+            new Thread(new Leitor()).start();
         } catch(IOException ex){
             this.fireErro(ex.getMessage());
             ex.printStackTrace();
+        }
+    }
+
+    private class Leitor implements Runnable {
+        public void run(){
+            try {
+                while(!acabouJogo()) {
+                String linha = getReader().readLine();
+
+                if(linha.split("|")[0].equals("jogar")) {
+                    jogar(Integer.parseInt(linha.split("|")[1]));
+                }
+            }
+            } catch(IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -196,6 +206,14 @@ public class JogoDaVelhaServer {
     }
 
     public void atualizarStatus() {
+        this.escrever("posicoes|");
+        String msg = "";
+        for(String posicao : status.getPosicoes()) {
+            msg += posicao + ",";
+        }
+        this.escrever(msg.subSequence(0, msg.length()-1).toString());
+        this.escrever("jogadorCorrente|" + status.getJogadorCorrente());
+
         this.fireMudouStatusJogo();
     }
     
@@ -215,12 +233,12 @@ public class JogoDaVelhaServer {
 
     private void fireEmpatouJogo(){
         for(OuvinteStatusServer ouvinte : ouvintes){
-            ouvinte.empatouJogo(status);
+            ouvinte.comecouJogo(status);
         }
     }
 
     private void fireAcabouJogo(){
-        this.escrever("status|acabou");
+        this.escrever("statusGeral|acabou");
         for(OuvinteStatusServer ouvinte : ouvintes){
             ouvinte.acabouJogo(status);
         }

@@ -18,6 +18,10 @@ public class Status {
         return jogadorCorrente;
     }
 
+    public String[] getPosicoes(){
+        return this.posicoes;
+    }
+
     public void setJogadorCorrente(String jogadorCorrente) {
         this.jogadorCorrente = jogadorCorrente;
     }
@@ -36,13 +40,5 @@ public class Status {
 
     public void setPosicaoPressionada(int posicaoPressionada){
         this.posicaoPressionada = posicaoPressionada;
-    }
-
-    public String getStatus(){
-        return this.status;
-    }
-
-    public void setStatus(String status){
-        this.status = status;
     }
 }
