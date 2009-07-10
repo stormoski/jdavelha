@@ -17,7 +17,7 @@ public class FrmServer extends javax.swing.JFrame {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            public void empatouJogo(Status statusJogo) {
+            public void comecouJogo(Status statusJogo) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
@@ -30,7 +30,7 @@ public class FrmServer extends javax.swing.JFrame {
             }
 
             public void novaConexao(String jogador, String ip) {
-                txtLog.append(">> O jogador " + jogador + ", IP " + ip + " conectou.");
+                atualizarMensagem(">> O jogador " + jogador + ", IP " + ip + " conectou.");
             }
 
             public void desconectou(String jogador, String ip) {
@@ -39,6 +39,11 @@ public class FrmServer extends javax.swing.JFrame {
 
             public void erro(String mensagem) {
                 throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            public void atualizarMensagem(String msg) {
+                txtLog.append(msg);
+                txtLog.append("\n");
             }
         });
 

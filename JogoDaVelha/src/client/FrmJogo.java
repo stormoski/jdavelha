@@ -15,14 +15,14 @@ import eventos.Status;
 import java.io.IOException;
 
 public class FrmJogo extends JFrame {
-    private Client client;
+    private JogoDaVelhaClient client;
     private List<JLabel> lacunas;
 
     public FrmJogo(){
         initComponents();
 
         lacunas = new ArrayList<JLabel>();
-        client = new Client();
+        client = new JogoDaVelhaClient();
 
         for(Component c : this.getContentPane().getComponents()){
             if(c.getName() != null && c.getName().startsWith("lacuna")){
@@ -49,7 +49,7 @@ public class FrmJogo extends JFrame {
                 lblStatus.setText("Jogador Corrente: " + statusJogo.getJogadorCorrente());
             }
 
-            public void empatouJogo(Status statusJogo) {
+            public void comecouJogo(Status statusJogo) {
                 JOptionPane.showMessageDialog(null, "O jogo empatou...", "Empatou", JOptionPane.WARNING_MESSAGE);
             }
 
@@ -62,12 +62,12 @@ public class FrmJogo extends JFrame {
             public void posicaoOcupada(Status statusJogo) {
                 JOptionPane.showMessageDialog(null, "A posicao está ocupada. Jogue novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
+
+            public void atualizarMensagem(String msg) {
+                lblStatus.setText(msg);
+            }
         });
 
-        this.iniciar();
-    }
-    
-    public void iniciar() {
         for(JLabel label : lacunas){
             label.setText("");
         }
@@ -76,7 +76,9 @@ public class FrmJogo extends JFrame {
         int x = (tool.getScreenSize().width - this.getWidth()) / 2;
         int y = (tool.getScreenSize().height - this.getHeight()) / 2;
         this.setLocation(x, y);
-
+    }
+    
+    public void iniciar() {
         client.iniciar();
     }
 
