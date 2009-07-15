@@ -45,11 +45,15 @@ public class JogoDaVelhaServer {
             }
 
             mapaJogadores.put("X", server.accept());
+            this.getWriter("X").flush();
+            this.getReader("X");
             this.fireNovaConexao("X", mapaJogadores.get("X").getInetAddress().getHostAddress());
 
             this.escrever("X", "statusGeral|conectado");
 
             mapaJogadores.put("O", server.accept());
+            this.getWriter("O").flush();
+            this.getReader("O");
             this.fireNovaConexao("O", mapaJogadores.get("O").getInetAddress().getHostAddress());
 
             this.escrever("O", "statusGeral|conectado");
@@ -61,27 +65,40 @@ public class JogoDaVelhaServer {
             status = new Status();
 
             this.atualizarStatus();
-
-            new Thread(new Leitor()).start();
+            
+            this.leitor();
         } catch(IOException ex){
             this.fireErro(ex.getMessage());
+            ex.printStackTrace();
+        } finally {
+            this.liberarRecursos();
+        }
+    }
+
+    private void liberarRecursos(){
+        try{
+            for(String s : jogadores){
+                this.getReader(s).close();
+                this.getWriter(s).close();
+            }
+
+            server.close();
+        } catch(IOException ex){
             ex.printStackTrace();
         }
     }
 
-    private class Leitor implements Runnable {
-        public void run(){
-            try {
-                while(!acabouJogo()) {
+    private void leitor(){
+        try {
+            while(!acabouJogo()) {
                 String linha = getReader().readLine();
 
                 if(linha.split("|")[0].equals("jogar")) {
                     jogar(Integer.parseInt(linha.split("|")[1]));
                 }
             }
-            } catch(IOException ex) {
-                ex.printStackTrace();
-            }
+        } catch(IOException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -177,10 +194,14 @@ public class JogoDaVelhaServer {
     }
 
     private BufferedReader getReader(){
+        return this.getReader(jogadores[jogadorCorrente]);
+    }
+
+    private BufferedReader getReader(String jogador){
         BufferedReader reader = null;
 
         try{
-            Socket socket = mapaJogadores.get(jogadores[jogadorCorrente]);
+            Socket socket = mapaJogadores.get(jogador);
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch(IOException ex){
             this.fireErro(ex.getMessage());
