@@ -24,6 +24,17 @@ public class FrmJogo extends JFrame {
         lacunas = new ArrayList<JLabel>();
         client = new JogoDaVelhaClient();
 
+        for(JLabel label : lacunas){
+            label.setText("");
+        }
+
+        Toolkit tool = Toolkit.getDefaultToolkit();
+        int x = (tool.getScreenSize().width - this.getWidth()) / 2;
+        int y = (tool.getScreenSize().height - this.getHeight()) / 2;
+        this.setLocation(x, y);
+    }
+    
+    public void iniciar() {
         for(Component c : this.getContentPane().getComponents()){
             if(c.getName() != null && c.getName().startsWith("lacuna")){
                 final JLabel label = (JLabel) c;
@@ -67,18 +78,7 @@ public class FrmJogo extends JFrame {
                 lblStatus.setText(msg);
             }
         });
-
-        for(JLabel label : lacunas){
-            label.setText("");
-        }
-
-        Toolkit tool = Toolkit.getDefaultToolkit();
-        int x = (tool.getScreenSize().width - this.getWidth()) / 2;
-        int y = (tool.getScreenSize().height - this.getHeight()) / 2;
-        this.setLocation(x, y);
-    }
-    
-    public void iniciar() {
+        
         client.iniciar();
     }
 
@@ -267,13 +267,9 @@ public class FrmJogo extends JFrame {
     }//GEN-LAST:event_mnNovoActionPerformed
 
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                FrmJogo janela = new FrmJogo();
-                janela.setVisible(true);
-                janela.iniciar();
-            }
-        });
+        FrmJogo janela = new FrmJogo();
+        janela.setVisible(true);
+        janela.iniciar();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

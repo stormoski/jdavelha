@@ -30,38 +30,48 @@ public class JogoDaVelhaClient {
             saida = new BufferedWriter(new OutputStreamWriter(cliente.getOutputStream()));
             saida.flush();
             entrada = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
-            new Thread(new Leitor()).start();
+            this.leitor();
         } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            this.liberarRecursos();
+        }
+    }
+
+    private void liberarRecursos(){
+        try{
+            saida.close();
+            entrada.close();
+            cliente.close();
+        } catch(IOException ex){
             ex.printStackTrace();
         }
     }
 
-    private class Leitor implements Runnable {
-        public void run(){
-            try{
-                acabouJogo = entrada.readLine().contains("acabou");
+    private void leitor(){
+        try{
+            //acabouJogo = entrada.readLine().contains("acabou");
 
-                while(!acabouJogo()){
-                    String[] mensagem = entrada.readLine().split("|");
+            while(!acabouJogo()){
+                String[] mensagem = entrada.readLine().split("|");
 
-                    if(mensagem[0].equals("statusGeral")){
-                        atualizarStatusGeral(mensagem[1]);
-                    } else if(mensagem[0].equals("posicoes")){
-                        String[] posicoes = mensagem[1].split(",");
-                        status.setPosicoes(posicoes);
-                        fireMudouStatusJogo();
-                    } else if(mensagem[0].equals("jogadorCorrente")){
-                        status.setJogadorCorrente(mensagem[1]);
-                        fireMudouStatusJogo();
-                    } else if(mensagem[0].equals("iniciarJogo")){
-                        fireComecouJogo();
-                    } else if(mensagem[0].equals("jogar")){
-                        obterRespostaJogada(mensagem[1]);
-                    }
+                if(mensagem[0].equals("statusGeral")){
+                    atualizarStatusGeral(mensagem[1]);
+                } else if(mensagem[0].equals("posicoes")){
+                    String[] posicoes = mensagem[1].split(",");
+                    status.setPosicoes(posicoes);
+                    fireMudouStatusJogo();
+                } else if(mensagem[0].equals("jogadorCorrente")){
+                    status.setJogadorCorrente(mensagem[1]);
+                    fireMudouStatusJogo();
+                } else if(mensagem[0].equals("iniciarJogo")){
+                    fireComecouJogo();
+                } else if(mensagem[0].equals("jogar")){
+                    obterRespostaJogada(mensagem[1]);
                 }
-            } catch(IOException ex){
-                ex.printStackTrace();
             }
+        } catch(IOException ex){
+            ex.printStackTrace();
         }
     }
 
