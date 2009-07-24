@@ -7,6 +7,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -18,6 +19,8 @@ public class JogoDaVelhaServer {
     private String[] posicoes;
     private String[] jogadores;
     private Map<String, Socket> mapaJogadores;
+    private Map<String, PrintWriter> mapaEscritores;
+    private Map<String, BufferedReader> mapaLeitores;
     private int jogadorCorrente;
     private Status status;
     private List<OuvinteStatusServer> ouvintes;
@@ -29,6 +32,8 @@ public class JogoDaVelhaServer {
             posicoes = new String[9];
             jogadores = new String[2];
             mapaJogadores = new HashMap<String, Socket>();
+            mapaEscritores = new HashMap<String, PrintWriter>();
+            mapaLeitores = new HashMap<String, BufferedReader>();
             ouvintes = new ArrayList<OuvinteStatusServer>();
             server = new ServerSocket(1234);
             acabouJogo = false;
@@ -45,22 +50,14 @@ public class JogoDaVelhaServer {
             }
 
             mapaJogadores.put("X", server.accept());
-            this.getWriter("X").flush();
-            this.getReader("X");
-            this.fireNovaConexao("X", mapaJogadores.get("X").getInetAddress().getHostAddress());
-
-            this.escrever("X", "statusGeral|conectado");
+            this.inicializarJogador("X");
+            jogadores[0] = "X";
 
             mapaJogadores.put("O", server.accept());
-            this.getWriter("O").flush();
-            this.getReader("O");
-            this.fireNovaConexao("O", mapaJogadores.get("O").getInetAddress().getHostAddress());
-
-            this.escrever("O", "statusGeral|conectado");
-            this.escrever("statusGeral|iniciarJogo");
-
-            jogadores[0] = "X";
+            this.inicializarJogador("O");
             jogadores[1] = "O";
+            
+            this.escrever("statusGeral|iniciarJogo");
             jogadorCorrente = (int) (Math.random() * 2);
             status = new Status();
 
@@ -70,8 +67,21 @@ public class JogoDaVelhaServer {
         } catch(IOException ex){
             this.fireErro(ex.getMessage());
             ex.printStackTrace();
-        } finally {
-            this.liberarRecursos();
+        }
+    }
+
+    private void inicializarJogador(String jogador) {
+        try {
+            PrintWriter escritor = new PrintWriter(new OutputStreamWriter(mapaJogadores.get(jogador).getOutputStream()));
+            escritor.flush();
+            mapaEscritores.put(jogador, escritor);
+            BufferedReader leitor = new BufferedReader(new InputStreamReader(mapaJogadores.get(jogador).getInputStream()));
+            mapaLeitores.put(jogador, leitor);
+
+            this.fireNovaConexao(jogador, mapaJogadores.get(jogador).getInetAddress().getHostAddress());
+            this.escrever(jogador, "statusGeral|conectado");
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -84,6 +94,8 @@ public class JogoDaVelhaServer {
 
             server.close();
         } catch(IOException ex){
+            ex.printStackTrace();
+        } catch(Exception ex){
             ex.printStackTrace();
         }
     }
@@ -99,11 +111,14 @@ public class JogoDaVelhaServer {
             }
         } catch(IOException ex) {
             ex.printStackTrace();
+        } catch(Exception ex){
+            ex.printStackTrace();
+        } finally {
+            this.liberarRecursos();
         }
     }
 
     private void jogar(int posicao) {
-        
         if(this.posicaoOcupada(posicao)){
             this.firePosicaoOcupada(posicao);
             return;
@@ -162,9 +177,9 @@ public class JogoDaVelhaServer {
 
     private void escrever(String jogador, String mensagem) {
         try{
-            getWriter(jogador).write(mensagem);
-        } catch(IOException ex){
-            this.fireErro(ex.getMessage());
+            getWriter(jogador).println(mensagem);
+            getWriter(jogador).flush();
+        } catch(Exception ex){
             ex.printStackTrace();
         }
     }
@@ -175,22 +190,12 @@ public class JogoDaVelhaServer {
         }
     }
 
-    private BufferedWriter getWriter(){
+    private PrintWriter getWriter(){
         return this.getWriter(jogadores[jogadorCorrente]);
     }
 
-    private BufferedWriter getWriter(String jogador){
-        BufferedWriter writer = null;
-
-        try{
-            Socket socket = mapaJogadores.get(jogador);
-            writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-        } catch(IOException ex){
-            this.fireErro(ex.getMessage());
-            ex.printStackTrace();
-        }
-
-        return writer;
+    private PrintWriter getWriter(String jogador){
+        return mapaEscritores.get(jogador);
     }
 
     private BufferedReader getReader(){
@@ -198,17 +203,7 @@ public class JogoDaVelhaServer {
     }
 
     private BufferedReader getReader(String jogador){
-        BufferedReader reader = null;
-
-        try{
-            Socket socket = mapaJogadores.get(jogador);
-            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch(IOException ex){
-            this.fireErro(ex.getMessage());
-            ex.printStackTrace();
-        }
-
-        return reader;
+        return mapaLeitores.get(jogador);
     }
 
     public String getJogadorCorrente(){
@@ -227,12 +222,11 @@ public class JogoDaVelhaServer {
     }
 
     public void atualizarStatus() {
-        this.escrever("posicoes|");
         String msg = "";
         for(String posicao : status.getPosicoes()) {
             msg += posicao + ",";
         }
-        this.escrever(msg.subSequence(0, msg.length()-1).toString());
+        this.escrever("posicoes" + msg.subSequence(0, msg.length()-1).toString());
         this.escrever("jogadorCorrente|" + status.getJogadorCorrente());
 
         this.fireMudouStatusJogo();

@@ -4,7 +4,7 @@ import java.net.Socket;
 import eventos.OuvinteStatus;
 import eventos.Status;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.PrintWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -15,7 +15,7 @@ public class JogoDaVelhaClient {
 
     private Socket cliente;
     private BufferedReader entrada;
-    private BufferedWriter saida;
+    private PrintWriter saida;
     private Status status;
     private List<OuvinteStatus> ouvintes;
     private boolean acabouJogo;
@@ -27,14 +27,14 @@ public class JogoDaVelhaClient {
     public void iniciar(){
         try{
             cliente = new Socket("localhost", 1234);
-            saida = new BufferedWriter(new OutputStreamWriter(cliente.getOutputStream()));
+            saida = new PrintWriter(new OutputStreamWriter(cliente.getOutputStream()));
             saida.flush();
             entrada = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
             this.leitor();
         } catch (IOException ex) {
             ex.printStackTrace();
-        } finally {
-            this.liberarRecursos();
+        } catch(Exception ex){
+            ex.printStackTrace();
         }
     }
 
@@ -45,6 +45,8 @@ public class JogoDaVelhaClient {
             cliente.close();
         } catch(IOException ex){
             ex.printStackTrace();
+        } catch(Exception ex){
+            ex.printStackTrace();
         }
     }
 
@@ -53,7 +55,8 @@ public class JogoDaVelhaClient {
             //acabouJogo = entrada.readLine().contains("acabou");
 
             while(!acabouJogo()){
-                String[] mensagem = entrada.readLine().split("|");
+                String texto = entrada.readLine();
+                String[] mensagem = texto.split("|");
 
                 if(mensagem[0].equals("statusGeral")){
                     atualizarStatusGeral(mensagem[1]);
@@ -72,6 +75,10 @@ public class JogoDaVelhaClient {
             }
         } catch(IOException ex){
             ex.printStackTrace();
+        } catch(Exception ex){
+            ex.printStackTrace();
+        } finally {
+            this.liberarRecursos();
         }
     }
 
@@ -91,7 +98,8 @@ public class JogoDaVelhaClient {
     }
 
     public void jogar(Integer posicao) throws IOException {
-        saida.write("jogar|" + posicao);
+        saida.println("jogar|" + posicao);
+        saida.flush();
     }
 
     public void addOuvinteStatus(OuvinteStatus ouvinte) {

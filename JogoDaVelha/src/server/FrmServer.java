@@ -14,19 +14,24 @@ public class FrmServer extends javax.swing.JFrame {
     private void iniciar() {
         server.addOuvinteStatus(new OuvinteStatusServer() {
             public void mudouEstadoJogo(Status statusJogo) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                String msg = ">> Posições: ";
+                for(String posicao : statusJogo.getPosicoes()){
+                    msg += posicao + ",";
+                }
+
+                atualizarMensagem(msg.subSequence(0, msg.length() - 1).toString());
             }
 
             public void comecouJogo(Status statusJogo) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                
             }
 
             public void acabouJogo(Status statusJogo) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                
             }
 
             public void posicaoOcupada(Status statusJogo) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                
             }
 
             public void novaConexao(String jogador, String ip) {
