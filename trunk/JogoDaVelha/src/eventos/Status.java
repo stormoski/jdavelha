@@ -4,14 +4,17 @@ public class Status {
     private String jogadorCorrente;
     private String[] posicoes;
     private int posicaoPressionada;
-    private String status;
-    
+        
     public Status(String jogadorCorrente, String[] posicoes){
         this.setJogadorCorrente(jogadorCorrente);
         this.setPosicoes(posicoes);
     }
 
     public Status(){
+        posicoes = new String[9];
+        for(int i = 0; i < posicoes.length; i++){
+            posicoes[i] = "";
+        }
     }
 
     public String getJogadorCorrente() {
