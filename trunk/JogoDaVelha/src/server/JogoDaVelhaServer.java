@@ -3,7 +3,6 @@ package server;
 import eventos.Status;
 import eventos.OuvinteStatusServer;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -36,6 +35,7 @@ public class JogoDaVelhaServer {
             mapaLeitores = new HashMap<String, BufferedReader>();
             ouvintes = new ArrayList<OuvinteStatusServer>();
             server = new ServerSocket(1234);
+            status = new Status();
             acabouJogo = false;
         } catch(IOException ex){
             this.fireErro(ex.getMessage());
@@ -57,9 +57,10 @@ public class JogoDaVelhaServer {
             this.inicializarJogador("O");
             jogadores[1] = "O";
             
-            this.escrever("statusGeral|iniciarJogo");
             jogadorCorrente = (int) (Math.random() * 2);
-            status = new Status();
+            this.escrever("statusGeral|iniciarJogo");
+
+            this.escrever(jogadores[jogadorCorrente], "statusGeral|seuTurno");
 
             this.atualizarStatus();
             
@@ -72,11 +73,11 @@ public class JogoDaVelhaServer {
 
     private void inicializarJogador(String jogador) {
         try {
-            PrintWriter escritor = new PrintWriter(new OutputStreamWriter(mapaJogadores.get(jogador).getOutputStream()));
-            escritor.flush();
-            mapaEscritores.put(jogador, escritor);
             BufferedReader leitor = new BufferedReader(new InputStreamReader(mapaJogadores.get(jogador).getInputStream()));
             mapaLeitores.put(jogador, leitor);
+            
+            PrintWriter escritor = new PrintWriter(new OutputStreamWriter(mapaJogadores.get(jogador).getOutputStream()), true);
+            mapaEscritores.put(jogador, escritor);
 
             this.fireNovaConexao(jogador, mapaJogadores.get(jogador).getInetAddress().getHostAddress());
             this.escrever(jogador, "statusGeral|conectado");
@@ -105,8 +106,8 @@ public class JogoDaVelhaServer {
             while(!acabouJogo()) {
                 String linha = getReader().readLine();
 
-                if(linha.split("|")[0].equals("jogar")) {
-                    jogar(Integer.parseInt(linha.split("|")[1]));
+                if(linha.split("\\|")[0].equals("jogar")) {
+                    jogar(Integer.parseInt(linha.split("\\|")[1]));
                 }
             }
         } catch(IOException ex) {
@@ -178,7 +179,6 @@ public class JogoDaVelhaServer {
     private void escrever(String jogador, String mensagem) {
         try{
             getWriter(jogador).println(mensagem);
-            getWriter(jogador).flush();
         } catch(Exception ex){
             ex.printStackTrace();
         }
