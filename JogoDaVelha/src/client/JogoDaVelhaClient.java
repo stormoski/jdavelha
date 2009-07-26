@@ -2,6 +2,7 @@ package client;
 
 import java.net.Socket;
 import eventos.OuvinteStatus;
+import eventos.OuvinteStatusClient;
 import eventos.Status;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
@@ -14,22 +15,22 @@ import java.util.List;
 public class JogoDaVelhaClient {
 
     private Socket cliente;
-    private BufferedReader entrada;
-    private PrintWriter saida;
+    private BufferedReader leitor;
+    private PrintWriter escritor;
     private Status status;
-    private List<OuvinteStatus> ouvintes;
+    private List<OuvinteStatusClient> ouvintes;
     private boolean acabouJogo;
 
     public JogoDaVelhaClient() {
-        ouvintes = new ArrayList<OuvinteStatus>();
+        ouvintes = new ArrayList<OuvinteStatusClient>();
     }
 
     public void iniciar(){
         try{
             cliente = new Socket("localhost", 1234);
-            saida = new PrintWriter(new OutputStreamWriter(cliente.getOutputStream()));
-            saida.flush();
-            entrada = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
+            escritor = new PrintWriter(new OutputStreamWriter(cliente.getOutputStream()), true);
+
+            leitor = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
             this.leitor();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -40,8 +41,8 @@ public class JogoDaVelhaClient {
 
     private void liberarRecursos(){
         try{
-            saida.close();
-            entrada.close();
+            escritor.close();
+            leitor.close();
             cliente.close();
         } catch(IOException ex){
             ex.printStackTrace();
@@ -55,8 +56,8 @@ public class JogoDaVelhaClient {
             //acabouJogo = entrada.readLine().contains("acabou");
 
             while(!acabouJogo()){
-                String texto = entrada.readLine();
-                String[] mensagem = texto.split("|");
+                String texto = leitor.readLine();
+                String[] mensagem = texto.split("\\|");
 
                 if(mensagem[0].equals("statusGeral")){
                     atualizarStatusGeral(mensagem[1]);
@@ -87,6 +88,10 @@ public class JogoDaVelhaClient {
             this.fireAtualizarMensagem("Você está conectado no server");
         } else if(statusGeral.equals("acabou")){
             this.fireAcabouJogo();
+        } else if(statusGeral.equals("seuTurno")){
+            this.fireSeuTurno();
+        } else if(statusGeral.equals("acabouTurno")){
+            this.fireAcabouTurno();
         }
     }
 
@@ -98,15 +103,14 @@ public class JogoDaVelhaClient {
     }
 
     public void jogar(Integer posicao) throws IOException {
-        saida.println("jogar|" + posicao);
-        saida.flush();
+        escritor.println("jogar|" + posicao);
     }
 
-    public void addOuvinteStatus(OuvinteStatus ouvinte) {
+    public void addOuvinteStatus(OuvinteStatusClient ouvinte) {
         ouvintes.add(ouvinte);
     }
 
-    public void removeOuvinteStatus(OuvinteStatus ouvinte) {
+    public void removeOuvinteStatus(OuvinteStatusClient ouvinte) {
         ouvintes.remove(ouvinte);
     }
 
@@ -115,13 +119,13 @@ public class JogoDaVelhaClient {
     }
 
     private void fireMudouStatusJogo(){
-        for(OuvinteStatus ouvinte : ouvintes){
+        for(OuvinteStatusClient ouvinte : ouvintes){
             ouvinte.mudouEstadoJogo(status);
         }
     }
 
     private void fireComecouJogo(){
-        for(OuvinteStatus ouvinte : ouvintes){
+        for(OuvinteStatusClient ouvinte : ouvintes){
             ouvinte.comecouJogo(status);
         }
     }
@@ -141,6 +145,18 @@ public class JogoDaVelhaClient {
     private void fireAtualizarMensagem(String msg){
         for(OuvinteStatus ouvinte : ouvintes){
             ouvinte.atualizarMensagem(msg);
+        }
+    }
+
+    private void fireSeuTurno(){
+        for(OuvinteStatusClient ouvinte : ouvintes){
+            ouvinte.seuTurno();
+        }
+    }
+
+    private void fireAcabouTurno(){
+        for(OuvinteStatusClient ouvinte : ouvintes){
+            ouvinte.acabouTurno();
         }
     }
 }
