@@ -13,7 +13,7 @@ public class Status {
     public Status(){
         posicoes = new String[9];
         for(int i = 0; i < posicoes.length; i++){
-            posicoes[i] = "";
+            posicoes[i] = " ";
         }
     }
 
