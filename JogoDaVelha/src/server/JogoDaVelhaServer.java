@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JogoDaVelhaServer {
-    private String[] posicoes;
     private String[] jogadores;
     private Map<String, Socket> mapaJogadores;
     private Map<String, PrintWriter> mapaEscritores;
@@ -28,7 +27,6 @@ public class JogoDaVelhaServer {
 
     public JogoDaVelhaServer() {
         try{
-            posicoes = new String[9];
             jogadores = new String[2];
             mapaJogadores = new HashMap<String, Socket>();
             mapaEscritores = new HashMap<String, PrintWriter>();
@@ -45,10 +43,6 @@ public class JogoDaVelhaServer {
 
     public void iniciar() {
         try{
-            for(int i = 0; i < posicoes.length; i++){
-                posicoes[i] = "";
-            }
-
             mapaJogadores.put("X", server.accept());
             this.inicializarJogador("X");
             jogadores[0] = "X";
@@ -58,12 +52,9 @@ public class JogoDaVelhaServer {
             jogadores[1] = "O";
             
             jogadorCorrente = (int) (Math.random() * 2);
-            this.escrever("statusGeral|iniciarJogo");
-
-            this.escrever(jogadores[jogadorCorrente], "statusGeral|seuTurno");
 
             this.atualizarStatus();
-            
+            this.escrever(jogadores[jogadorCorrente], "statusGeral|seuTurno");
             this.leitor();
         } catch(IOException ex){
             this.fireErro(ex.getMessage());
@@ -125,7 +116,7 @@ public class JogoDaVelhaServer {
             return;
         }
         
-        posicoes[posicao] = jogadores[jogadorCorrente];
+        status.getPosicoes()[posicao] = jogadores[jogadorCorrente];
         jogadorCorrente = (jogadorCorrente + 1) % 2;
         
         this.atualizarStatus(posicao);
@@ -135,11 +126,14 @@ public class JogoDaVelhaServer {
         } else if(this.todasPosicoesOcupadas()){
             this.fireEmpatouJogo();
         }
+
+        this.escrever(jogadores[jogadorCorrente], "statusGeral|seuTurno");
+        this.escrever(jogadores[(jogadorCorrente + 1) % 2], "statusGeral|acabouTurno");
     }
 
     private boolean todasPosicoesOcupadas(){
-        for(String s : posicoes){
-            if(s == null || s.equals("")){
+        for(String s : status.getPosicoes()){
+            if(s == null || s.equals(" ")){
                 return false;
             }
         }
@@ -163,12 +157,12 @@ public class JogoDaVelhaServer {
     }
 
     private boolean compararSequencia(int posicao1, int posicao2, int posicao3){
-        if(posicoes[posicao1] == null || posicoes[posicao1].equals("") ||
-                posicoes[posicao2] == null || posicoes[posicao2].equals("") ||
-                    posicoes[posicao3] == null || posicoes[posicao3].equals("")){
+        if(status.getPosicoes()[posicao1] == null || status.getPosicoes()[posicao1].equals(" ") ||
+                status.getPosicoes()[posicao2] == null || status.getPosicoes()[posicao2].equals(" ") ||
+                    status.getPosicoes()[posicao3] == null || status.getPosicoes()[posicao3].equals(" ")){
             return false;
         } else {
-            return posicoes[posicao1].equals(posicoes[posicao2]) && posicoes[posicao2].equals(posicoes[posicao3]);
+            return status.getPosicoes()[posicao1].equals(status.getPosicoes()[posicao2]) && status.getPosicoes()[posicao2].equals(status.getPosicoes()[posicao3]);
         }
     }
 
@@ -211,22 +205,23 @@ public class JogoDaVelhaServer {
     }
     
     private boolean posicaoOcupada(int posicao){
-        return !posicoes[posicao].equals("");
+        return !status.getPosicoes()[posicao].equals(" ");
     }
 
     public void atualizarStatus(int posicao) {
         status.setPosicaoPressionada(posicao);
-        status.setJogadorCorrente(jogadores[jogadorCorrente]);
         
         this.atualizarStatus();
     }
 
     public void atualizarStatus() {
+        status.setJogadorCorrente(this.getJogadorCorrente());
         String msg = "";
+        
         for(String posicao : status.getPosicoes()) {
             msg += posicao + ",";
         }
-        this.escrever("posicoes" + msg.subSequence(0, msg.length()-1).toString());
+        this.escrever("posicoes|" + msg.subSequence(0, msg.length()-1).toString());
         this.escrever("jogadorCorrente|" + status.getJogadorCorrente());
 
         this.fireMudouStatusJogo();

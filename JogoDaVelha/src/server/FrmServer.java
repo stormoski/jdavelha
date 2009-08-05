@@ -2,6 +2,8 @@ package server;
 
 import eventos.OuvinteStatusServer;
 import eventos.Status;
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
 
 public class FrmServer extends javax.swing.JFrame {
     private JogoDaVelhaServer server;
@@ -14,9 +16,11 @@ public class FrmServer extends javax.swing.JFrame {
     private void iniciar() {
         server.addOuvinteStatus(new OuvinteStatusServer() {
             public void mudouEstadoJogo(Status statusJogo) {
-                String msg = ">> Posições: ";
-                for(String posicao : statusJogo.getPosicoes()){
-                    msg += posicao + ",";
+                String msg = ">> " + statusJogo.getJogadorCorrente() + " jogou na posição " + 
+                        statusJogo.getPosicaoPressionada() + "\n>> Posições:\n";
+                
+                for(int i = 1; i <= 9; i++){
+                    msg += i % 3 == 0 ? statusJogo.getPosicao(i - 1) : "\n";
                 }
 
                 atualizarMensagem(msg.subSequence(0, msg.length() - 1).toString());
@@ -36,6 +40,7 @@ public class FrmServer extends javax.swing.JFrame {
 
             public void novaConexao(String jogador, String ip) {
                 atualizarMensagem(">> O jogador " + jogador + ", IP " + ip + " conectou.");
+                ((DefaultListModel)lstJogadores.getModel()).addElement("");
             }
 
             public void desconectou(String jogador, String ip) {

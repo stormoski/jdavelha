@@ -44,7 +44,9 @@ public class FrmJogo extends JFrame {
                 label.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseReleased(MouseEvent evt){
-                        jogar(lacunas.indexOf(label));
+                        if(evt.getButton() == MouseEvent.BUTTON1 && label.isEnabled()){
+                            jogar(lacunas.indexOf(label));
+                        }
                     }
                 });
             }

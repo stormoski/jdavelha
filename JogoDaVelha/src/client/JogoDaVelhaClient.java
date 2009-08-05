@@ -23,6 +23,7 @@ public class JogoDaVelhaClient {
 
     public JogoDaVelhaClient() {
         ouvintes = new ArrayList<OuvinteStatusClient>();
+        status = new Status();
     }
 
     public void iniciar(){
@@ -53,8 +54,6 @@ public class JogoDaVelhaClient {
 
     private void leitor(){
         try{
-            //acabouJogo = entrada.readLine().contains("acabou");
-
             while(!acabouJogo()){
                 String texto = leitor.readLine();
                 String[] mensagem = texto.split("\\|");
