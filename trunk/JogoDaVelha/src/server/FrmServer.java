@@ -20,13 +20,13 @@ public class FrmServer extends javax.swing.JFrame {
                         statusJogo.getPosicaoPressionada() + "\n>> Posições:\n";
                 
                 for(int i = 1; i <= 9; i++){
-                    msg += i % 3 == 0 ? statusJogo.getPosicao(i - 1) : "\n";
+                    msg += i % 3 != 0 ? (statusJogo.getPosicao(i - 1).equals(" ") ? "-" : statusJogo.getPosicao(i - 1)) : "\n";
                 }
 
                 atualizarMensagem(msg.subSequence(0, msg.length() - 1).toString());
             }
 
-            public void comecouJogo(Status statusJogo) {
+            public void conectou(String jogador) {
                 
             }
 
@@ -40,7 +40,7 @@ public class FrmServer extends javax.swing.JFrame {
 
             public void novaConexao(String jogador, String ip) {
                 atualizarMensagem(">> O jogador " + jogador + ", IP " + ip + " conectou.");
-                ((DefaultListModel)lstJogadores.getModel()).addElement("");
+                //((DefaultListModel)lstJogadores.getModel()).addElement("");
             }
 
             public void desconectou(String jogador, String ip) {

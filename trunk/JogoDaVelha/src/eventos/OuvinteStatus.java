@@ -3,7 +3,7 @@ package eventos;
 public interface OuvinteStatus {
     void mudouEstadoJogo(Status statusJogo);
 
-    void comecouJogo(Status statusJogo);
+    public void conectou(String jogador);
 
     void acabouJogo(Status statusJogo);
 
