@@ -71,7 +71,7 @@ public class JogoDaVelhaServer {
             mapaEscritores.put(jogador, escritor);
 
             this.fireNovaConexao(jogador, mapaJogadores.get(jogador).getInetAddress().getHostAddress());
-            this.escrever(jogador, "statusGeral|conectado");
+            this.escrever(jogador, "conectou|" + jogador);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -243,7 +243,7 @@ public class JogoDaVelhaServer {
 
     private void fireEmpatouJogo(){
         for(OuvinteStatusServer ouvinte : ouvintes){
-            ouvinte.comecouJogo(status);
+            ouvinte.conectou(null);
         }
     }
 

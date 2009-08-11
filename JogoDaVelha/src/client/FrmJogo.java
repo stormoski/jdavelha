@@ -64,8 +64,8 @@ public class FrmJogo extends JFrame {
             }
 
             @Override
-            public void comecouJogo(Status statusJogo) {
-                JOptionPane.showMessageDialog(null, "O jogo empatou...", "Empatou", JOptionPane.WARNING_MESSAGE);
+            public void conectou(String jogador) {
+                setTitle(">> " + jogador);
             }
 
             @Override

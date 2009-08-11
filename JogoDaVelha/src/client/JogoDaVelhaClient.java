@@ -67,8 +67,9 @@ public class JogoDaVelhaClient {
                 } else if(mensagem[0].equals("jogadorCorrente")){
                     status.setJogadorCorrente(mensagem[1]);
                     fireMudouStatusJogo();
-                } else if(mensagem[0].equals("iniciarJogo")){
-                    fireComecouJogo();
+                } else if(mensagem[0].equals("conectou")){
+                    fireAtualizarMensagem("Você está conectado no server");
+                    fireConectou(mensagem[1]);
                 } else if(mensagem[0].equals("jogar")){
                     obterRespostaJogada(mensagem[1]);
                 }
@@ -83,10 +84,8 @@ public class JogoDaVelhaClient {
     }
 
     private void atualizarStatusGeral(String statusGeral){
-        if(statusGeral.equals("conectado")){
-            this.fireAtualizarMensagem("Você está conectado no server");
-        } else if(statusGeral.equals("acabou")){
-            this.fireAcabouJogo();
+        if(statusGeral.equals("acabou")){
+            this.fireAcabouJogo(status);
         } else if(statusGeral.equals("seuTurno")){
             this.fireSeuTurno();
         } else if(statusGeral.equals("acabouTurno")){
@@ -97,7 +96,7 @@ public class JogoDaVelhaClient {
     private void obterRespostaJogada(String resposta){
         if(resposta.equals("sucesso")){
         } else if(resposta.equals("posicaoOcupada")){
-            this.firePosicaoOcupada();
+            this.firePosicaoOcupada(status);
         }
     }
 
@@ -123,19 +122,19 @@ public class JogoDaVelhaClient {
         }
     }
 
-    private void fireComecouJogo(){
+    private void fireConectou(String jogador){
         for(OuvinteStatusClient ouvinte : ouvintes){
-            ouvinte.comecouJogo(status);
+            ouvinte.conectou(jogador);
         }
     }
 
-    private void fireAcabouJogo(){
+    private void fireAcabouJogo(Status status){
         for(OuvinteStatus ouvinte : ouvintes){
             ouvinte.acabouJogo(status);
         }
     }
 
-    private void firePosicaoOcupada(){
+    private void firePosicaoOcupada(Status status){
         for(OuvinteStatus ouvinte : ouvintes){
             ouvinte.posicaoOcupada(status);
         }
