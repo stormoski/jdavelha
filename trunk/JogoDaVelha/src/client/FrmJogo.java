@@ -64,8 +64,8 @@ public class FrmJogo extends JFrame {
             }
 
             @Override
-            public void conectou(String jogador) {
-                setTitle(">> " + jogador);
+            public void conectou() {
+                
             }
 
             @Override
@@ -93,6 +93,11 @@ public class FrmJogo extends JFrame {
             @Override
             public void acabouTurno() {
                 trocarEstadoCampos(false);
+            }
+
+            @Override
+            public void seuJogadorEh(String jogador) {
+                setTitle(">> " + jogador);
             }
         });
         

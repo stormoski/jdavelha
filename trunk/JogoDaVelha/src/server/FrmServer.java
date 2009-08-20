@@ -3,6 +3,7 @@ package server;
 import eventos.OuvinteStatusServer;
 import eventos.Status;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 
 public class FrmServer extends javax.swing.JFrame {
@@ -19,28 +20,27 @@ public class FrmServer extends javax.swing.JFrame {
                 String msg = ">> " + statusJogo.getJogadorCorrente() + " jogou na posição " + 
                         statusJogo.getPosicaoPressionada() + "\n>> Posições:\n";
                 
-                for(int i = 1; i <= 9; i++){
-                    msg += i % 3 != 0 ? (statusJogo.getPosicao(i - 1).equals(" ") ? "-" : statusJogo.getPosicao(i - 1)) : "\n";
+                for(int i = 0; i <= 8; i++){
+                    if(i % 3 == 0 && i != 8 && i != 0){
+                        msg += "\n";
+                    }
+
+                    msg += statusJogo.getPosicao(i).replace(" ", "-");
                 }
 
-                atualizarMensagem(msg.subSequence(0, msg.length() - 1).toString());
+                atualizarMensagem(msg);
             }
 
-            public void conectou(String jogador) {
-                
+            public void conectou(String jogador, String ip) {
+                atualizarMensagem(">> O jogador " + jogador + ", IP " + ip + " conectou.");
             }
 
             public void acabouJogo(Status statusJogo) {
-                
+                JOptionPane.showMessageDialog(null, "O jogo acabou, ");
             }
 
             public void posicaoOcupada(Status statusJogo) {
                 
-            }
-
-            public void novaConexao(String jogador, String ip) {
-                atualizarMensagem(">> O jogador " + jogador + ", IP " + ip + " conectou.");
-                //((DefaultListModel)lstJogadores.getModel()).addElement("");
             }
 
             public void desconectou(String jogador, String ip) {
@@ -83,6 +83,11 @@ public class FrmServer extends javax.swing.JFrame {
         btnKick.setText("Kickar Jogador");
 
         btnEncerrar.setText("Encerrar Server");
+        btnEncerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEncerrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -91,17 +96,13 @@ public class FrmServer extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(scrollList, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(scrollTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
-                        .addContainerGap())
+                    .addComponent(scrollList, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
+                    .addComponent(scrollTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnKick)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
-                        .addComponent(btnEncerrar)
-                        .addContainerGap())))
+                        .addComponent(btnEncerrar)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,6 +120,10 @@ public class FrmServer extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnEncerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncerrarActionPerformed
+        //TODO: implementar
+    }//GEN-LAST:event_btnEncerrarActionPerformed
 
     public static void main(String args[]) {
         FrmServer janela = new FrmServer();

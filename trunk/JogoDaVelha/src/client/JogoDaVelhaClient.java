@@ -67,11 +67,10 @@ public class JogoDaVelhaClient {
                 } else if(mensagem[0].equals("jogadorCorrente")){
                     status.setJogadorCorrente(mensagem[1]);
                     fireMudouStatusJogo();
-                } else if(mensagem[0].equals("conectou")){
-                    fireAtualizarMensagem("Você está conectado no server");
-                    fireConectou(mensagem[1]);
                 } else if(mensagem[0].equals("jogar")){
                     obterRespostaJogada(mensagem[1]);
+                } else if(mensagem[0].equals("jogador")){
+                    fireSeuJogadorEh(mensagem[1]);
                 }
             }
         } catch(IOException ex){
@@ -84,7 +83,9 @@ public class JogoDaVelhaClient {
     }
 
     private void atualizarStatusGeral(String statusGeral){
-        if(statusGeral.equals("acabou")){
+        if(statusGeral.equals("conectou")){
+            this.fireConectou();
+        } else if(statusGeral.equals("acabou")){
             this.fireAcabouJogo(status);
         } else if(statusGeral.equals("seuTurno")){
             this.fireSeuTurno();
@@ -122,9 +123,10 @@ public class JogoDaVelhaClient {
         }
     }
 
-    private void fireConectou(String jogador){
+    private void fireConectou(){
+        this.fireAtualizarMensagem("Você está conectado no server");
         for(OuvinteStatusClient ouvinte : ouvintes){
-            ouvinte.conectou(jogador);
+            ouvinte.conectou();
         }
     }
 
@@ -155,6 +157,12 @@ public class JogoDaVelhaClient {
     private void fireAcabouTurno(){
         for(OuvinteStatusClient ouvinte : ouvintes){
             ouvinte.acabouTurno();
+        }
+    }
+
+    private void fireSeuJogadorEh(String jogador) {
+        for(OuvinteStatusClient ouvinte : ouvintes){
+            ouvinte.seuJogadorEh(jogador);
         }
     }
 }
