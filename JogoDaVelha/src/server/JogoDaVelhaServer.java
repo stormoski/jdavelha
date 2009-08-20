@@ -54,7 +54,7 @@ public class JogoDaVelhaServer {
             jogadorCorrente = (int) (Math.random() * 2);
 
             this.atualizarStatus();
-            this.escrever(jogadores[jogadorCorrente], "statusGeral|seuTurno");
+            
             this.leitor();
         } catch(IOException ex){
             this.fireErro(ex.getMessage());
@@ -70,8 +70,9 @@ public class JogoDaVelhaServer {
             PrintWriter escritor = new PrintWriter(new OutputStreamWriter(mapaJogadores.get(jogador).getOutputStream()), true);
             mapaEscritores.put(jogador, escritor);
 
-            this.fireNovaConexao(jogador, mapaJogadores.get(jogador).getInetAddress().getHostAddress());
-            this.escrever(jogador, "conectou|" + jogador);
+            this.fireConectou(jogador, mapaJogadores.get(jogador).getInetAddress().getHostAddress());
+            this.escrever(jogador, "jogador|" + jogador);
+            
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -221,8 +222,10 @@ public class JogoDaVelhaServer {
         for(String posicao : status.getPosicoes()) {
             msg += posicao + ",";
         }
+
         this.escrever("posicoes|" + msg.subSequence(0, msg.length()-1).toString());
         this.escrever("jogadorCorrente|" + status.getJogadorCorrente());
+        this.escrever(jogadores[jogadorCorrente], "statusGeral|seuTurno");
 
         this.fireMudouStatusJogo();
     }
@@ -243,7 +246,7 @@ public class JogoDaVelhaServer {
 
     private void fireEmpatouJogo(){
         for(OuvinteStatusServer ouvinte : ouvintes){
-            ouvinte.conectou(null);
+            //TODO: Implementar
         }
     }
 
@@ -261,9 +264,10 @@ public class JogoDaVelhaServer {
         }
     }
 
-    private void fireNovaConexao(String jogador, String ip){
+    private void fireConectou(String jogador, String ip){
+        this.escrever("statusGeral|conectou");
         for(OuvinteStatusServer ouvinte : ouvintes){
-            ouvinte.novaConexao(jogador, ip);
+            ouvinte.conectou(jogador, ip);
         }
     }
 
