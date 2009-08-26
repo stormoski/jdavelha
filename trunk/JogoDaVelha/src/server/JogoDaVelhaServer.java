@@ -54,7 +54,6 @@ public class JogoDaVelhaServer {
             jogadorCorrente = (int) (Math.random() * 2);
 
             this.atualizarStatus();
-            
             this.leitor();
         } catch(IOException ex){
             this.fireErro(ex.getMessage());
@@ -72,7 +71,6 @@ public class JogoDaVelhaServer {
 
             this.fireConectou(jogador, mapaJogadores.get(jogador).getInetAddress().getHostAddress());
             this.escrever(jogador, "jogador|" + jogador);
-            
         } catch (IOException ex) {
             ex.printStackTrace();
         }

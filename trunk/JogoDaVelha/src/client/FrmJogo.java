@@ -34,8 +34,12 @@ public class FrmJogo extends JFrame {
         int y = (tool.getScreenSize().height - this.getHeight()) / 2;
         this.setLocation(x, y);
     }
+
+    private void iniciar() {
+        this.iniciar("locahost");
+    }
     
-    public void iniciar() {
+    public void iniciar(String host) {
         for(Component c : this.getContentPane().getComponents()){
             if(c.getName() != null && c.getName().startsWith("lacuna")){
                 final JLabel label = (JLabel) c;
@@ -101,7 +105,7 @@ public class FrmJogo extends JFrame {
             }
         });
         
-        client.iniciar();
+        client.iniciar(host);
     }
 
     private void jogar(Integer posicao){
@@ -295,10 +299,10 @@ public class FrmJogo extends JFrame {
         this.iniciar();
     }//GEN-LAST:event_mnNovoActionPerformed
 
-    public static void main(String args[]) {
+    public static void newClient(String host) {
         FrmJogo janela = new FrmJogo();
         janela.setVisible(true);
-        janela.iniciar();
+        janela.iniciar(host);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
