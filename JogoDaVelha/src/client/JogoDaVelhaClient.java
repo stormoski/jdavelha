@@ -26,9 +26,9 @@ public class JogoDaVelhaClient {
         status = new Status();
     }
 
-    public void iniciar(){
+    public void iniciar(String host){
         try{
-            cliente = new Socket("localhost", 1234);
+            cliente = new Socket(host, 1234);
             escritor = new PrintWriter(new OutputStreamWriter(cliente.getOutputStream()), true);
 
             leitor = new BufferedReader(new InputStreamReader(cliente.getInputStream()));

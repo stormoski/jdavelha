@@ -2,9 +2,6 @@ package server;
 
 import eventos.OuvinteStatusServer;
 import eventos.Status;
-import javax.swing.DefaultListModel;
-import javax.swing.JOptionPane;
-import javax.swing.ListModel;
 
 public class FrmServer extends javax.swing.JFrame {
     private JogoDaVelhaServer server;
@@ -14,7 +11,7 @@ public class FrmServer extends javax.swing.JFrame {
         server = new JogoDaVelhaServer();
     }
 
-    private void iniciar() {
+    public void iniciar() {
         server.addOuvinteStatus(new OuvinteStatusServer() {
             public void mudouEstadoJogo(Status statusJogo) {
                 String msg = ">> " + statusJogo.getJogadorCorrente() + " jogou na posição " + 
@@ -36,7 +33,7 @@ public class FrmServer extends javax.swing.JFrame {
             }
 
             public void acabouJogo(Status statusJogo) {
-                JOptionPane.showMessageDialog(null, "O jogo acabou, ");
+                atualizarMensagem("O jogo acabou.");
             }
 
             public void posicaoOcupada(Status statusJogo) {
@@ -54,6 +51,7 @@ public class FrmServer extends javax.swing.JFrame {
             public void atualizarMensagem(String msg) {
                 txtLog.append(msg);
                 txtLog.append("\n");
+                txtLog.setCaretPosition(txtLog.getText().length());
             }
         });
 
@@ -124,12 +122,6 @@ public class FrmServer extends javax.swing.JFrame {
     private void btnEncerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncerrarActionPerformed
         //TODO: implementar
     }//GEN-LAST:event_btnEncerrarActionPerformed
-
-    public static void main(String args[]) {
-        FrmServer janela = new FrmServer();
-        janela.setVisible(true);
-        janela.iniciar();
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEncerrar;
