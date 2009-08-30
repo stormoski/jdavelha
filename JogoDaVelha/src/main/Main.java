@@ -149,10 +149,19 @@ public class Main extends javax.swing.JFrame {
             }).start();
         } else {
             final FrmServer janela = new FrmServer();
+            final FrmJogo jogo = new FrmJogo();
             janela.setVisible(true);
+            jogo.setVisible(true);
+            
             new Thread(new Runnable() {
                 public void run() {
                     janela.iniciar();
+                }
+            }).start();
+
+            new Thread(new Runnable() {
+                public void run() {
+                    jogo.iniciar("localhost");
                 }
             }).start();
         }

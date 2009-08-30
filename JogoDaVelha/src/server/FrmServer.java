@@ -14,8 +14,10 @@ public class FrmServer extends javax.swing.JFrame {
     public void iniciar() {
         server.addOuvinteStatus(new OuvinteStatusServer() {
             public void mudouEstadoJogo(Status statusJogo) {
-                String msg = ">> " + statusJogo.getJogadorCorrente() + " jogou na posição " + 
-                        statusJogo.getPosicaoPressionada() + "\n>> Posições:\n";
+                atualizarMensagem(statusJogo.getJogadorCorrente() + " jogou na posição " +
+                        statusJogo.getPosicaoPressionada());
+
+                String msg = "Posições:\n";
                 
                 for(int i = 0; i <= 8; i++){
                     if(i % 3 == 0 && i != 8 && i != 0){
@@ -29,7 +31,7 @@ public class FrmServer extends javax.swing.JFrame {
             }
 
             public void conectou(String jogador, String ip) {
-                atualizarMensagem(">> O jogador " + jogador + ", IP " + ip + " conectou.");
+                atualizarMensagem("O jogador " + jogador + ", IP " + ip + " conectou.");
             }
 
             public void acabouJogo(Status statusJogo) {
@@ -37,19 +39,19 @@ public class FrmServer extends javax.swing.JFrame {
             }
 
             public void posicaoOcupada(Status statusJogo) {
-                
+                atualizarMensagem("A posição " + statusJogo.getPosicaoPressionada() + " está ocupada.");
             }
 
             public void desconectou(String jogador, String ip) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                atualizarMensagem("O jogador " + jogador + ", ip " + ip + ".");
             }
 
             public void erro(String mensagem) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                atualizarMensagem("Erro: " + mensagem);
             }
 
             public void atualizarMensagem(String msg) {
-                txtLog.append(msg);
+                txtLog.append(">> " + msg);
                 txtLog.append("\n");
                 txtLog.setCaretPosition(txtLog.getText().length());
             }
