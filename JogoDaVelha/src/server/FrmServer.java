@@ -66,9 +66,6 @@ public class FrmServer extends javax.swing.JFrame {
 
         scrollTxt = new javax.swing.JScrollPane();
         txtLog = new javax.swing.JTextArea();
-        scrollList = new javax.swing.JScrollPane();
-        lstJogadores = new javax.swing.JList();
-        btnKick = new javax.swing.JButton();
         btnEncerrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -77,10 +74,6 @@ public class FrmServer extends javax.swing.JFrame {
         txtLog.setColumns(20);
         txtLog.setRows(5);
         scrollTxt.setViewportView(txtLog);
-
-        scrollList.setViewportView(lstJogadores);
-
-        btnKick.setText("Kickar Jogador");
 
         btnEncerrar.setText("Encerrar Server");
         btnEncerrar.addActionListener(new java.awt.event.ActionListener() {
@@ -93,28 +86,20 @@ public class FrmServer extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollList, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
-                    .addComponent(scrollTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnKick)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
-                        .addComponent(btnEncerrar)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(scrollTxt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
+                    .addComponent(btnEncerrar))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrollList, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+                .addComponent(scrollTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEncerrar)
-                    .addComponent(btnKick))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(scrollTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnEncerrar)
                 .addContainerGap())
         );
 
@@ -127,9 +112,6 @@ public class FrmServer extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEncerrar;
-    private javax.swing.JButton btnKick;
-    private javax.swing.JList lstJogadores;
-    private javax.swing.JScrollPane scrollList;
     private javax.swing.JScrollPane scrollTxt;
     private javax.swing.JTextArea txtLog;
     // End of variables declaration//GEN-END:variables
