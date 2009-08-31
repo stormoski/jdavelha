@@ -55,6 +55,10 @@ public class FrmServer extends javax.swing.JFrame {
                 txtLog.append("\n");
                 txtLog.setCaretPosition(txtLog.getText().length());
             }
+
+            public void empatou() {
+                atualizarMensagem("O jogo empatou.");
+            }
         });
 
         server.iniciar();
