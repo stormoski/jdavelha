@@ -263,7 +263,7 @@ public class JogoDaVelhaServer {
     }
 
     private void fireConectou(String jogador, String ip){
-        this.escrever("statusGeral|conectou");
+        this.escrever(jogador, "statusGeral|conectou");
         for(OuvinteStatusServer ouvinte : ouvintes){
             ouvinte.conectou(jogador, ip);
         }

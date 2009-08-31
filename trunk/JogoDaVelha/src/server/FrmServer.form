@@ -23,16 +23,11 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="scrollList" alignment="0" pref="441" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="scrollTxt" alignment="0" pref="441" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="btnKick" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="195" max="32767" attributes="0"/>
-                      <Component id="btnEncerrar" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="btnEncerrar" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -42,14 +37,9 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="scrollList" pref="85" max="32767" attributes="0"/>
+              <Component id="scrollTxt" pref="278" max="32767" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnEncerrar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnKick" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="scrollTxt" min="-2" pref="247" max="-2" attributes="0"/>
+              <Component id="btnEncerrar" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -71,27 +61,6 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JScrollPane" name="scrollList">
-      <AuxValues>
-        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-      </AuxValues>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-      <SubComponents>
-        <Component class="javax.swing.JList" name="lstJogadores">
-          <Properties>
-            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-              <StringArray count="0"/>
-            </Property>
-          </Properties>
-        </Component>
-      </SubComponents>
-    </Container>
-    <Component class="javax.swing.JButton" name="btnKick">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Kickar Jogador"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="btnEncerrar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Encerrar Server"/>
