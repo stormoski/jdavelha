@@ -243,8 +243,9 @@ public class JogoDaVelhaServer {
     }
 
     private void fireEmpatouJogo(){
+        this.escrever("statusGeral|empatou");
         for(OuvinteStatusServer ouvinte : ouvintes){
-            //TODO: Implementar
+            ouvinte.empatou();
         }
     }
 
