@@ -111,7 +111,7 @@ public class FrmServer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEncerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncerrarActionPerformed
-        //TODO: implementar
+        server.encerrar();
     }//GEN-LAST:event_btnEncerrarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

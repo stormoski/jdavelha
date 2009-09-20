@@ -54,7 +54,7 @@ public class JogoDaVelhaClient {
 
     private void leitor(){
         try{
-            while(!acabouJogo()){
+            while(!acabouJogo){
                 String texto = leitor.readLine();
                 String[] mensagem = texto.split("\\|");
 
@@ -106,10 +106,6 @@ public class JogoDaVelhaClient {
         ouvintes.remove(ouvinte);
     }
 
-    private boolean acabouJogo() {
-        return this.acabouJogo;
-    }
-
     private void fireMudouStatusJogo(){
         for(OuvinteStatusClient ouvinte : ouvintes){
             ouvinte.mudouEstadoJogo(status);
@@ -117,13 +113,15 @@ public class JogoDaVelhaClient {
     }
 
     private void fireConectou(){
-        this.fireAtualizarMensagem("Você está conectado no server");
+        this.fireAtualizarMensagem("Você está conectado no server.");
         for(OuvinteStatusClient ouvinte : ouvintes){
             ouvinte.conectou();
         }
     }
 
     private void fireAcabouJogo(){
+        this.acabouJogo = true;
+        this.fireAtualizarMensagem("O server encerrou a partida.");
         for(OuvinteStatus ouvinte : ouvintes){
             ouvinte.acabouJogo(status);
         }

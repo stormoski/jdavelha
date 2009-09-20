@@ -76,7 +76,6 @@ public class FrmJogo extends JFrame {
             public void acabouJogo(Status statusJogo) {
                 JOptionPane.showMessageDialog(null, "O jogador " + (statusJogo.getJogadorCorrente().equals("X") ? "O" : "X") + " ganhou!",
                         "Ganhou", JOptionPane.INFORMATION_MESSAGE);
-                iniciar();
             }
 
             @Override
@@ -137,10 +136,6 @@ public class FrmJogo extends JFrame {
         lacuna7 = new javax.swing.JLabel();
         lacuna8 = new javax.swing.JLabel();
         lblStatus = new javax.swing.JLabel();
-        barraMenu = new javax.swing.JMenuBar();
-        mnArquivo = new javax.swing.JMenu();
-        mnNovo = new javax.swing.JMenuItem();
-        mnSair = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(".:: JDaVelha");
@@ -182,7 +177,7 @@ public class FrmJogo extends JFrame {
         lacuna4.setPreferredSize(new java.awt.Dimension(50, 50));
 
         lacuna5.setBackground(new java.awt.Color(204, 204, 204));
-        lacuna5.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        lacuna5.setFont(new java.awt.Font("Dialog", 1, 24));
         lacuna5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lacuna5.setName("lacuna5"); // NOI18N
         lacuna5.setOpaque(true);
@@ -213,30 +208,6 @@ public class FrmJogo extends JFrame {
         lblStatus.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblStatus.setText("Iniciando...");
         lblStatus.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        mnArquivo.setText("Arquivo");
-
-        mnNovo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        mnNovo.setText("Novo Jogo");
-        mnNovo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnNovoActionPerformed(evt);
-            }
-        });
-        mnArquivo.add(mnNovo);
-
-        mnSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        mnSair.setText("Sair");
-        mnSair.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnSairActionPerformed(evt);
-            }
-        });
-        mnArquivo.add(mnSair);
-
-        barraMenu.add(mnArquivo);
-
-        setJMenuBar(barraMenu);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -291,14 +262,6 @@ public class FrmJogo extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void mnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnSairActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_mnSairActionPerformed
-
-    private void mnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnNovoActionPerformed
-        this.iniciar();
-    }//GEN-LAST:event_mnNovoActionPerformed
-
     public static void newClient(String host) {
         FrmJogo janela = new FrmJogo();
         janela.setVisible(true);
@@ -306,7 +269,6 @@ public class FrmJogo extends JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuBar barraMenu;
     private javax.swing.JLabel lacuna1;
     private javax.swing.JLabel lacuna2;
     private javax.swing.JLabel lacuna3;
@@ -317,9 +279,6 @@ public class FrmJogo extends JFrame {
     private javax.swing.JLabel lacuna8;
     private javax.swing.JLabel lacuna9;
     private javax.swing.JLabel lblStatus;
-    private javax.swing.JMenu mnArquivo;
-    private javax.swing.JMenuItem mnNovo;
-    private javax.swing.JMenuItem mnSair;
     // End of variables declaration//GEN-END:variables
 
 }
