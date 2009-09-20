@@ -1,0 +1,11 @@
+=Descrição Técnica=
+
+O JDaVelha é constituído por uma arquitetura do tipo cliente / servidor, usando conexões Sockets do pacote java.net. A comunicação entre ambos é realizada através de um protocolo bem simples, baseado em Strings. 
+
+Sua composição: "acao|valor1,valor2,valor3"
+
+A "acao" representa uma ação a ser executada no outro lado da rede, ex: 
+
+ Cliente fala para servidor "jogar|1"
+
+Em sua implementação original, as ações ainda estão hardcoded, mas em uma futura melhoria, elas poderiam estar em algum mecanismo mais eficiente e reutilizável (quem tiver interesse em fazer algo desse tipo, por favor entre em contato)
