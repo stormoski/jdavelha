@@ -111,7 +111,7 @@ public class JogoDaVelhaServer {
 
     private void jogar(int posicao) {
         if(this.posicaoOcupada(posicao)){
-            this.firePosicaoOcupada(posicao);
+            this.firePosicaoOcupada(posicao + 1);
             return;
         }
         
@@ -183,10 +183,6 @@ public class JogoDaVelhaServer {
         }
     }
 
-    private PrintWriter getWriter(){
-        return this.getWriter(jogadores[jogadorCorrente]);
-    }
-
     private PrintWriter getWriter(String jogador){
         return mapaEscritores.get(jogador);
     }
@@ -211,6 +207,7 @@ public class JogoDaVelhaServer {
         status.setPosicaoPressionada(posicao);
         
         this.atualizarStatus();
+        this.fireMudouStatusJogo();
     }
 
     public void atualizarStatus() {
@@ -224,8 +221,6 @@ public class JogoDaVelhaServer {
         this.escrever("posicoes|" + msg.subSequence(0, msg.length()-1).toString());
         this.escrever("jogadorCorrente|" + status.getJogadorCorrente());
         this.escrever(jogadores[jogadorCorrente], "statusGeral|seuTurno");
-
-        this.fireMudouStatusJogo();
     }
     
     public void addOuvinteStatus(OuvinteStatusServer ouvinte){
@@ -257,9 +252,9 @@ public class JogoDaVelhaServer {
     }
 
     private void firePosicaoOcupada(int posicao){
-        this.escrever("posicaoOcupada|" + posicao);
+        this.escrever(jogadores[jogadorCorrente], "posicaoOcupada|" + posicao);
         for(OuvinteStatusServer ouvinte : ouvintes){
-            ouvinte.posicaoOcupada(status);
+            ouvinte.posicaoOcupada(String.valueOf(posicao));
         }
     }
 

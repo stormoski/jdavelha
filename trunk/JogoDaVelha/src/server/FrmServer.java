@@ -38,8 +38,8 @@ public class FrmServer extends javax.swing.JFrame {
                 atualizarMensagem("O jogo acabou.");
             }
 
-            public void posicaoOcupada(Status statusJogo) {
-                atualizarMensagem("A posição " + statusJogo.getPosicaoPressionada() + " está ocupada.");
+            public void posicaoOcupada(String posicao) {
+                atualizarMensagem("A posição " + posicao + " está ocupada.");
             }
 
             public void desconectou(String jogador, String ip) {
