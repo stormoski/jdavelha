@@ -67,8 +67,8 @@ public class JogoDaVelhaClient {
                 } else if(mensagem[0].equals("jogadorCorrente")){
                     status.setJogadorCorrente(mensagem[1]);
                     fireMudouStatusJogo();
-                } else if(mensagem[0].equals("jogar")){
-                    obterRespostaJogada(mensagem[1]);
+                } else if(mensagem[0].equals("posicaoOcupada")){
+                    firePosicaoOcupada(mensagem[1]);
                 } else if(mensagem[0].equals("jogador")){
                     fireSeuJogadorEh(mensagem[1]);
                 }
@@ -86,18 +86,11 @@ public class JogoDaVelhaClient {
         if(statusGeral.equals("conectou")){
             this.fireConectou();
         } else if(statusGeral.equals("acabou")){
-            this.fireAcabouJogo(status);
+            this.fireAcabouJogo();
         } else if(statusGeral.equals("seuTurno")){
             this.fireSeuTurno();
         } else if(statusGeral.equals("acabouTurno")){
             this.fireAcabouTurno();
-        }
-    }
-
-    private void obterRespostaJogada(String resposta){
-        if(resposta.equals("sucesso")){
-        } else if(resposta.equals("posicaoOcupada")){
-            this.firePosicaoOcupada(status);
         }
     }
 
@@ -130,15 +123,15 @@ public class JogoDaVelhaClient {
         }
     }
 
-    private void fireAcabouJogo(Status status){
+    private void fireAcabouJogo(){
         for(OuvinteStatus ouvinte : ouvintes){
             ouvinte.acabouJogo(status);
         }
     }
 
-    private void firePosicaoOcupada(Status status){
+    private void firePosicaoOcupada(String posicao){
         for(OuvinteStatus ouvinte : ouvintes){
-            ouvinte.posicaoOcupada(status);
+            ouvinte.posicaoOcupada(posicao);
         }
     }
 

@@ -5,7 +5,7 @@ public interface OuvinteStatus {
 
     void acabouJogo(Status statusJogo);
 
-    void posicaoOcupada(Status statusJogo);
+    void posicaoOcupada(String posicao);
 
     void atualizarMensagem(String msg);
 }

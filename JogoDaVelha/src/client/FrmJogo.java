@@ -80,8 +80,8 @@ public class FrmJogo extends JFrame {
             }
 
             @Override
-            public void posicaoOcupada(Status statusJogo) {
-                JOptionPane.showMessageDialog(null, "A posicao está ocupada. Jogue novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+            public void posicaoOcupada(String posicao) {
+                JOptionPane.showMessageDialog(null, "A posicao " + posicao +" está ocupada. Jogue novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
 
             @Override
