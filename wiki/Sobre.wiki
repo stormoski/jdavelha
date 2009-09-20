@@ -1,0 +1,1 @@
+O JDaVelha é a implementação de um jogo da velha na linguagem Java e pode ser jogado em rede por dois jogadores remotos. 
