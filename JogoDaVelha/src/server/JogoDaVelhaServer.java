@@ -93,7 +93,7 @@ public class JogoDaVelhaServer {
 
     private void leitor(){
         try {
-            while(!acabouJogo()) {
+            while(!acabouJogo) {
                 String linha = getReader().readLine();
 
                 if(linha.split("\\|")[0].equals("jogar")) {
@@ -165,10 +165,6 @@ public class JogoDaVelhaServer {
         }
     }
 
-    private boolean acabouJogo(){
-        return this.acabouJogo;
-    }
-
     private void escrever(String jogador, String mensagem) {
         try{
             getWriter(jogador).println(mensagem);
@@ -238,6 +234,7 @@ public class JogoDaVelhaServer {
     }
 
     private void fireEmpatouJogo(){
+        this.acabouJogo = true;
         this.escrever("statusGeral|empatou");
         for(OuvinteStatusServer ouvinte : ouvintes){
             ouvinte.empatou();
@@ -245,6 +242,7 @@ public class JogoDaVelhaServer {
     }
 
     private void fireAcabouJogo(){
+        this.acabouJogo = true;
         this.escrever("statusGeral|acabou");
         for(OuvinteStatusServer ouvinte : ouvintes){
             ouvinte.acabouJogo(status);
@@ -265,15 +263,13 @@ public class JogoDaVelhaServer {
         }
     }
 
-    private void fireDesconectou(String jogador, String ip){
-        for(OuvinteStatusServer ouvinte : ouvintes){
-            ouvinte.desconectou(jogador, ip);
-        }
-    }
-
     private void fireErro(String mensagem){
         for(OuvinteStatusServer ouvinte : ouvintes){
             ouvinte.erro(mensagem);
         }
+    }
+
+    public void encerrar() {
+        this.fireAcabouJogo();
     }
 }
